@@ -7,7 +7,9 @@ import java.util.List;
 public class Employee {
 
 	private static final int[] SALARY_GRADES = {3000000, 5000000, 7000000};
+	// * Fungsi untuk menentukan gaji bulanan pegawai berdasarkan grade kepegawaiannya 
 	private static final double FOREIGNER_SALARY_MULTIPLIER = 1.5;
+	// * Jika pegawai adalah warga negara asing gaji bulanan diperbesar sebanyak 50%
 
 	private String employeeId;
 	private String firstName;
@@ -19,7 +21,7 @@ public class Employee {
     private int monthWorkingInYear;
 	
 	private boolean isForeigner;
-	private Gender gender; //true = Laki-laki, false = Perempuan
+	private Gender gender; //Male, Female
 	
 	private int monthlySalary;
 	private int otherMonthlyIncome;
@@ -45,10 +47,7 @@ public class Employee {
 		childIdNumbers = new LinkedList<String>();
 	}
 	
-	/**
-	 * Fungsi untuk menentukan gaji bulanan pegawai berdasarkan grade kepegawaiannya (grade 1: 3.000.000 per bulan, grade 2: 5.000.000 per bulan, grade 3: 7.000.000 per bulan)
-	 * Jika pegawai adalah warga negara asing gaji bulanan diperbesar sebanyak 50%
-	 */
+	
 	public enum Gender {
         MALE, FEMALE
     }
@@ -74,8 +73,9 @@ public class Employee {
 	
 	public int getAnnualIncomeTax() {
 		
-		//Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
+		//Menghitung berapa lama pegawai bekerja dalam setahun ini.
 		LocalDate now = LocalDate.now();
+		// jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
 		monthWorkingInYear = (now.getYear() == dateJoined.getYear()) ? now.getMonthValue() - dateJoined.getMonthValue() : 12;
         return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
    }
