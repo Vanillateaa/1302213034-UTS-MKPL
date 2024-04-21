@@ -6,10 +6,8 @@ import java.util.List;
 
 public class Employee {
 
-	private static final int SALARY_GRADE_1 = 3000000;
-    private static final int SALARY_GRADE_2 = 5000000;
-    private static final int SALARY_GRADE_3 = 7000000;
-    private static final double FOREIGNER_SALARY_MULTIPLIER = 1.5;
+	private static final int[] SALARY_GRADES = {3000000, 5000000, 7000000};
+	private static final double FOREIGNER_SALARY_MULTIPLIER = 1.5;
 
 	private String employeeId;
 	private String firstName;
@@ -57,20 +55,11 @@ public class Employee {
 	 */
 	
 	public void setMonthlySalary(int grade) {	
-		switch (grade) {
-            case 1:
-                monthlySalary = SALARY_GRADE_1;
-                break;
-            case 2:
-                monthlySalary = SALARY_GRADE_2;
-                break;
-            case 3:
-                monthlySalary = SALARY_GRADE_3;
-                break;
-            default:
-                throw new IllegalArgumentException("Grade tidak valid");
+		if (grade < 1 || grade > SALARY_GRADES.length) {
+            throw new IllegalArgumentException("Grade tidak valid");
         }
-        if (isForeigner) {
+        monthlySalary = SALARY_GRADES[grade - 1];
+       if (isForeigner) {
             monthlySalary *= FOREIGNER_SALARY_MULTIPLIER;
         }
 	}
@@ -89,7 +78,6 @@ public class Employee {
 		
 		//Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
 		LocalDate date = LocalDate.now();
-		
 		monthWorkingInYear = (date.getYear() == yearJoined) ? date.getMonthValue() - monthJoined : 12;
         return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
     }
